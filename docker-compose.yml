@@ -1,4 +1,3 @@
-
 services:
 
   user-service:
@@ -40,10 +39,8 @@ services:
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5003/health')"]
       interval: 15s
-      timeout: 5s
-      retries: 3
 
-  nginx:
+nginx:
     image: nginx:alpine
     container_name: microservices-nginx
     restart: unless-stopped
