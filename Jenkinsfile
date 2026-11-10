@@ -132,26 +132,28 @@ pipeline {
         }
 
         stage('Deploy Microservices') {
-            steps {
-                sh '''
-                    set -e
+    steps {
+        sh '''
+            set -e
 
-                    echo "Pulling updated ECR images..."
+            export IMAGE_TAG=${BUILD_NUMBER}
 
-                    docker compose \
-                        -p ${COMPOSE_PROJECT_NAME} \
-                        pull user-service product-service order-service
+            echo "Pulling updated ECR images..."
 
-                    echo "Deploying updated microservices..."
+            docker compose \
+                -p ${COMPOSE_PROJECT_NAME} \
+                pull user-service product-service order-service
 
-                    docker compose \
-                        -p ${COMPOSE_PROJECT_NAME} \
-                        up -d --no-build
+            echo "Deploying updated microservices..."
 
-                    echo "Deployment commands completed"
-                '''
-            }
-        }
+            docker compose \
+                -p ${COMPOSE_PROJECT_NAME} \
+                up -d --no-build
+
+            echo "Deployment completed"
+        '''
+    }
+}
 
         stage('Verify Containers') {
             steps {
